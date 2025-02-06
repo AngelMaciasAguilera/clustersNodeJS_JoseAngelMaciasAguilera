@@ -7,10 +7,14 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 3000, host: 3000
   config.vm.provision "shell", name: "general_provisions", inline: <<-SHELL 
     # Updating the vagrant machine
-    sudo apt-get -y update
-    
+    sudo apt update && sudo apt upgrade -y
+
+    # To obtain the last version of node so some packages don't fail
+    sudo apt-get install -y curl
+    curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+
     # Installing nodeJS
-    sudo apt install nodejs npm -y
+    sudo apt-get install -y nodejs
 
   SHELL
 
@@ -23,7 +27,7 @@ Vagrant.configure("2") do |config|
     sudo chown -R vagrant:www-data /var/www/cluster_machine
     cd /var/www/cluster_machine
     npm install express
-    npm install -g loadtest
+    sudo npm install -g loadtest
     # Copying the default.js to the app folder
     sudo cp -vr /vagrant/cluster_files/default.js /var/www/cluster_machine
     sudo cp -vr /vagrant/cluster_files/cluster.js /var/www/cluster_machine

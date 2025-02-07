@@ -28,7 +28,13 @@ Vagrant.configure("2") do |config|
     cd /var/www/cluster_machine
     npm install express
     sudo npm install -g loadtest
+    # Installing the proccess manager pm2 of NodeJS
     npm install pm2 -g
+    # Creating the ecosystem of PM2
+    pm2 ecosystem
+    # Copying the content to the ecosystem.config.js file
+    sudo cp -vr /vagrant/cluster_files/ecosystem.config.js  /var/www/cluster_machine
+
     # Copying the default.js to the app folder
     sudo cp -vr /vagrant/cluster_files/default.js /var/www/cluster_machine
     sudo cp -vr /vagrant/cluster_files/cluster.js /var/www/cluster_machine
